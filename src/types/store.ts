@@ -5,7 +5,7 @@ export type DraftStore<I = any> = Draft<{state: I}>
 
 export type Updater<I = any> = (dratfStore: DraftStore<I>) => void
 
-export type UpdateStore<I = any> = (updater: Updater) => I
+export type UpdateStore<I = any> = (updater: Updater<I>) => I
 
 export interface ActionUtilOption<I = any> {
   updateStore: UpdateStore<I>
