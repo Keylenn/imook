@@ -7,13 +7,13 @@ export type Updater<I = any> = (dratfStore: DraftStore<I>) => void
 
 export type UpdateStore<I = any> = (updater: Updater<I>) => I
 
-export interface ActionUtilOption<I = any> {
-  updateStore: UpdateStore<I>
+export interface ActUtil<I = any> {
+  commit: UpdateStore<I>
   stateRef: React.MutableRefObject<I>
 }
 
 export interface ActionCreator<I> {
-  (utilOption: ActionUtilOption<I>, ...args: any[]): any
+  (actUtil: ActUtil<I>, ...args: any[]): any
 }
 
 export type ActionCreatorsMapObject<I, A> = Record<keyof A, ActionCreator<I>>

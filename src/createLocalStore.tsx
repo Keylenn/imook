@@ -41,7 +41,7 @@ export default function createLocalStore<
         return state
       }
       for (const key in actionCreatorsMap) {
-        actions[key] = (...args: any[]) => actionCreatorsMap[key]({updateStore, stateRef}, ...args)
+        actions[key] = (...args: any[]) => actionCreatorsMap[key]({commit: updateStore, stateRef}, ...args)
       }
       return actions
     }, [])

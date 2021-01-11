@@ -1,6 +1,6 @@
 import createLocalStore from './createLocalStore'
 import Provider, {withStores} from './Provider'
-import {ActionUtilOption} from './types/store'
+import {ActUtil} from './types/store'
 
-export {createLocalStore, Provider, withStores, ActionUtilOption}
+export {createLocalStore, Provider, withStores, ActUtil}
 export default {createLocalStore, Provider, withStores}
