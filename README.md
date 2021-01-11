@@ -17,7 +17,12 @@
   </tbody>
 </table>
 
-
+## ✨特性
++ 局部状态管理，精准定位store作用区间
++ 无this, 状态不可变
++ 支持异步action，修改状态简单化
++ 支持读写分离和定制更新(衍生数据)
++ 支持中断更新和批量更新同步逻辑
 
 ## 📦 安装
 
@@ -56,12 +61,11 @@ import counterSotre from "./counterStore"
 
 function Counter() {
   // 返回[state, actions]
-  const [count, { inc, dec }] = counterStore.useStore()
+  const [count, { inc }] = counterStore.useStore()
   return (
     <div>
       count:{count}
       <button onClick={inc}>+</button>
-      <button onClick={dec}>-</button>
     </div>
   )
 }
