@@ -1,6 +1,7 @@
 {
   "extends": "@efox/emp-tsconfig",
   "compilerOptions": {
+    "downlevelIteration": false,
     "jsx": "react",
     "baseUrl": ".",
     "declaration": true,

@@ -1,35 +1,22 @@
-import {TupleTail} from './common'
 import {Draft} from 'immer'
 
-export type DraftStore<I = any> = Draft<{state: I}>
+export type AnyFn = (...args: any) => any
 
-export type Updater<I = any> = (dratfStore: DraftStore<I>) => void
+export type DraftStore<S = any> = Draft<{state: S}>
 
-export type UpdateStore<I = any> = (updater: Updater<I>) => I
+export type Updater<S = any> = (dratfStore: DraftStore<S>) => void
 
-export interface ActUtil<I = any> {
-  commit: UpdateStore<I>
-  stateRef: React.MutableRefObject<I>
+export type UpdateStore<S = any> = (updater: Updater<S>) => S
+
+export interface ActionUtils<S> {
+  commit: UpdateStore<S>
+  get: () => {
+    state: S
+  }
 }
 
-export interface ActionCreator<I> {
-  (actUtil: ActUtil<I>, ...args: any[]): any
-}
+export type ActionCreator<S> = (utils: ActionUtils<S>) => Record<string, AnyFn>
 
-export type ActionCreatorsMapObject<I, A> = Record<keyof A, ActionCreator<I>>
+export type Actions<C extends AnyFn> = ReturnType<C>
 
-export type Actions<I, A extends ActionCreatorsMapObject<I, A>> = {
-  [P in keyof A]: (...args: TupleTail<Parameters<A[P]>>) => void
-}
-
-export type SubCtsxMapObject<S, T> = {[P in keyof S]: React.Context<T>}
-export interface ChiProvider {
-  ({children}: {children: React.ReactNode}): JSX.Element
-}
-
-export interface ScopeStore<I, A extends ActionCreatorsMapObject<I, A>, S extends Record<string, (state: I) => any>> {
-  Provider: ChiProvider
-  useActions: () => Actions<I, A>
-  useStore: () => [I, Actions<I, A>]
-  useSubscribe: <K extends keyof S>(subKey: K) => ReturnType<S[K]>
-}
+export type MapStateFn<S> = (state: S) => any
