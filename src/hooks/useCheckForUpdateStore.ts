@@ -1,4 +1,4 @@
-import {useReducer, useRef} from 'react'
+import * as React from 'react'
 import {useIsomorphicLayoutEffect} from './useIsomorphicLayoutEffect'
 import isArrayEqual from '../utils/isArrayEqual'
 import StateContainer from '../StateContainer'
@@ -15,8 +15,8 @@ export default function useCheckForUpdateStore<S>(
   mapStateFn?: MapStateFn<S>,
   isDeepEqual = false,
 ): void {
-  const [, forceRender] = useReducer(s => s + 1, 0)
-  const depsRef = useRef<any[]>(getDeps(stateContainer, mapStateFn))
+  const [, forceRender] = React.useReducer(s => s + 1, 0)
+  const depsRef = React.useRef<any[]>(getDeps(stateContainer, mapStateFn))
 
   useIsomorphicLayoutEffect(() => {
     const listener = () => {
