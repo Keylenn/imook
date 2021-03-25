@@ -2,9 +2,17 @@ import produce from 'immer'
 import StateContainer from './StateContainer'
 import useCheckForUpdateStore from './hooks/useCheckForUpdateStore'
 import {ActionCreator, Actions, MapStateFn} from './types/store'
+import rootStoreMap from './rootStoreMap'
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export default function createLocalStore<S, C extends ActionCreator<S>>(initialState: S, actionCreator: C) {
+export default function createLocalStore<S, C extends ActionCreator<S>>(
+  initialState: S,
+  actionCreator: C,
+  uniqueKey: string,
+) {
+  const localStoreCache = rootStoreMap?.get(uniqueKey)
+  if (localStoreCache) return localStoreCache
+
   const stateContainer = new StateContainer(initialState)
 
   const actions = actionCreator({
@@ -30,11 +38,12 @@ export default function createLocalStore<S, C extends ActionCreator<S>>(initialS
     useCheckForUpdateStore<S>(stateContainer, mapStateFn, isDeepEqual)
     return [state, actions]
   }
-
-  return {
+  const localStore = {
     actions,
     useStore,
   }
+  rootStoreMap?.set(uniqueKey, localStore)
+  return localStore
 }
 
 export type TlocalStore = ReturnType<typeof createLocalStore>

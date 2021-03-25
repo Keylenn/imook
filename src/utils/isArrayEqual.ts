@@ -1,4 +1,4 @@
-import isEqual from 'lodash.isequal'
+import isEqual from 'lodash/isEqual'
 import is from './is'
 
 export type AnyArr = any[]
