@@ -11,7 +11,12 @@ export default function createLocalStore<S, C extends ActionCreator<S>>(
   uniqueKey: string,
 ) {
   const localStoreCache = rootStoreMap?.get(uniqueKey)
-  if (localStoreCache) return localStoreCache
+  if (localStoreCache) {
+    return localStoreCache as {
+      actions: Actions<C>
+      useStore: typeof useStore
+    }
+  }
 
   const stateContainer = new StateContainer(initialState)
 
