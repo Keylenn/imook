@@ -2821,13 +2821,6 @@ immer@^8.0.1:
   resolved "https://registry.yarnpkg.com/immer/-/immer-8.0.1.tgz#9c73db683e2b3975c424fb0572af5889877ae656"
   integrity sha512-aqXhGP7//Gui2+UrEtvxZxSquQVXTpZ7KDxfCcKAF3Vysvw0CViVaW9RZ1j1xlIYqaaaipBoqdqeibkc18PNvA==
 
-imook@^0.5.1:
-  version "0.5.1"
-  resolved "https://registry.yarnpkg.com/imook/-/imook-0.5.1.tgz#6e34d3e9aaf508546873a78d3dcd7766d6c6e72c"
-  integrity sha512-ciQIgBZKjeBE+vfcFoq/cPKkhhv2FWbYz8LFXeSSlJ/u/s1GfY6R4aGvGluq1texgilAKqVPGX3+9pLLt0Y1kw==
-  dependencies:
-    immer "^8.0.1"
-
 import-cwd@^2.0.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/import-cwd/-/import-cwd-2.1.0.tgz#aa6cf36e722761285cb371ec6519f53e2435b0a9"

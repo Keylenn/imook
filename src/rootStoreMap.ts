@@ -1,5 +1,5 @@
 /**
- * Cache localStores by adding a unique key.
+ * Cache local stores by adding a unique key.
  * Avoid creating multiple.
  */
 const ROOT_STORE_MAP = '__IMOOK_ROOT_STORE_MAP__'

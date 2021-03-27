@@ -1,3 +1,10 @@
+/*
+ * @Description:
+ * @Author: hejilun
+ * @Date: 2021-03-27 20:38:49
+ * @LastEditors: hejilun
+ * @LastEditTime: 2021-03-27 22:02:21
+ */
 import produce from 'immer'
 import StateContainer from './StateContainer'
 import useCheckForUpdateStore from './hooks/useCheckForUpdateStore'
@@ -11,15 +18,10 @@ export default function createLocalStore<S, C extends ActionCreator<S>>(
   uniqueKey: string,
 ) {
   const localStoreCache = rootStoreMap?.get(uniqueKey)
-  if (localStoreCache) {
-    return localStoreCache as {
-      actions: Actions<C>
-      useStore: typeof useStore
-    }
-  }
 
-  const stateContainer = new StateContainer(initialState)
-
+  const stateContainer = (localStoreCache
+    ? localStoreCache?.stateContainer
+    : new StateContainer(initialState)) as StateContainer<S>
   const actions = actionCreator({
     commit: updater => {
       const {state} = produce({state: stateContainer.state}, updater)
@@ -32,23 +34,36 @@ export default function createLocalStore<S, C extends ActionCreator<S>>(
     }),
   }) as Actions<C>
 
-  function useStore(): [S, Actions<C>]
-  function useStore(isDeepEqual: boolean): [S, Actions<C>]
-  function useStore<M extends MapStateFn<S>>(mapStateFn: M): [ReturnType<M>, Actions<C>]
-  function useStore<M extends MapStateFn<S>>(mapStateFn: M, isDeepEqual: boolean): [ReturnType<M>, Actions<C>]
-  function useStore(arg_0?: any, arg_1?: any) {
+  if (localStoreCache) {
+    // Actions need to be updated When creating local stores every time
+    localStoreCache.instance.actions = actions
+    rootStoreMap?.set(uniqueKey, localStoreCache)
+    return localStoreCache?.instance as {
+      actions: Actions<C>
+      useState: typeof useState
+    }
+  }
+
+  // Keep the single responsibility of the API
+  function useState(): S
+  function useState(isDeepEqual: boolean): S
+  function useState<M extends MapStateFn<S>>(mapStateFn: M): ReturnType<M>
+  function useState<M extends MapStateFn<S>>(mapStateFn: M, isDeepEqual: boolean): ReturnType<M>
+  function useState(arg_0?: any, arg_1?: any) {
     const mapStateFn = typeof arg_0 === 'function' ? arg_0 : void 0
     const isDeepEqual = arg_0 === true || arg_1 === true ? true : false
-    const state = mapStateFn ? mapStateFn(stateContainer.state) : stateContainer.state
     useCheckForUpdateStore<S>(stateContainer, mapStateFn, isDeepEqual)
-    return [state, actions]
+    return mapStateFn ? mapStateFn(stateContainer.state) : stateContainer.state
   }
   const localStore = {
-    actions,
-    useStore,
+    instance: {
+      actions,
+      useState,
+    },
+    stateContainer,
   }
   rootStoreMap?.set(uniqueKey, localStore)
-  return localStore
+  return localStore.instance
 }
 
 export type TlocalStore = ReturnType<typeof createLocalStore>
