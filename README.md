@@ -20,7 +20,7 @@
 
 ## ✨特性
 + 局部Store，全局单一实例，精准定位store作用区间
-+ 轻量，API简单化
++ 轻量，API简单化，类型提示友好
 + 无this, 状态不可变
 + 支持异步action，修改状态简单化
 + 支持读写分离和定制更新(衍生数据)
@@ -115,27 +115,30 @@ const actionCreator = ({ commit, get }) => ({
 + ```const state = localStore.useState()```
   <p style="margin-bottom: .5em;"></p>
 
-  > 不带参数，直接返回状态
-  > 状态改变时直接更新
+  + 不带参数，直接返回状态
+  + 状态改变时直接更新
 
 + ```const state = localStore.useState(isDeepEqual)```
   <p style="margin-bottom: .5em;"></p>
 
-  > 只有isDeepEqual（布尔值）一个参数，直接返回状态
-  > isDeepEqual为false，状态改变时直接更新
-  > isDeepEqual为true，状态改变时深比较前后两次状态，值不同时才更新
+  + 只有isDeepEqual（布尔值）一个参数，直接返回状态
+  + isDeepEqual为false，状态改变时直接更新
+  + isDeepEqual为true，状态改变时深比较前后两次状态，值不同时才更新
 
 + ```const derivedState = localStore.useState(mapStateFn)```
   <p style="margin-bottom: .5em;"></p>
 
-  > 只有mapStateFn一个参数，mapStateFn以state作为参数，可自定义返回的状态
-  > 状态改变时浅比较前后两次的衍生状态，值不同时才更新
+  + 只有mapStateFn一个参数，mapStateFn以state作为参数，可自定义返回的状态
+  + 状态改变时浅比较前后两次的衍生状态，值不同时才更新
+
 
 + ```const derivedState = localStore.useState(mapStateFn, isDeepEqual)```
   <p style="margin-bottom: .5em;"></p>
 
-  > 第一个参数为mapStateFn，以state作为参数，可自定义返回的状态
-  > 第二个参数为isDeepEqual，决定是否深比较前后两次的衍生状态，值不同时才更新
+  + 第一个参数为mapStateFn，以state作为参数，可自定义返回的状态
+  + 第二个参数为isDeepEqual，决定是否深比较前后两次的衍生状态，值不同时才更新
+<br />
+
 #### ```localStore.actions.xxx```
 调用Store对象返回的actions来修改状态，修改状态不限制使用方式。
 
