@@ -3,7 +3,7 @@
  * @Author: hejilun
  * @Date: 2021-03-27 20:38:49
  * @LastEditors: hejilun
- * @LastEditTime: 2021-04-10 15:40:26
+ * @LastEditTime: 2021-04-10 16:09:57
  */
 import produce from 'immer'
 import StateContainer from './StateContainer'
@@ -41,6 +41,7 @@ export default function createLocalStore<S, C extends ActionCreator<S>>(
     return localStoreCache?.instance as {
       actions: Actions<C>
       useState: typeof useState
+      getState: () => S
     }
   }
 

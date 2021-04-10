@@ -110,7 +110,7 @@ const actionCreator = ({ commit, get }) => ({
 ```
 
 ### ```localStore.useState(...overloads)```
-调用Store对象返回的useState获取状态，通过**重载**支持多种形式获取，和React Hooks一样，该API必须在[Function Component](https://reactjs.org/docs/hooks-state.html#hooks-and-function-components)中使用。
+调用Store对象返回的useState获取状态，通过**重载**支持多种形式获取，通过这种方式在状态变更会订阅更新，和React Hooks一样，该API必须在[Function Component](https://reactjs.org/docs/hooks-state.html#hooks-and-function-components)中使用。
 
 + ```const state = localStore.useState()```
   <p style="margin-bottom: .5em;"></p>
@@ -185,5 +185,29 @@ const useVisibleTodos = () => {
 }
 
 ```
+<br />
+
+### ```localStore.getState()```
+调用Store对象返回的getState获取当前的状态，值得注意的是这种方式**不会**订阅更新，它就像是一个内置的action，可在任何地方使用。
+
+```tsx
+
+function IncButton() {
+  return (
+      <button
+        onClick={() => {
+          // 获取当前的状态
+          const currState = counterStore.getState();
+          if(currState...) ...
+          counterStore.actions.inc();
+        }}
+      >
+        +
+      </button>
+  );
+}
+
+```
+
 
 
