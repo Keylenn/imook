@@ -3,7 +3,7 @@
  * @Author: hejilun
  * @Date: 2021-03-27 20:38:49
  * @LastEditors: hejilun
- * @LastEditTime: 2021-03-27 22:02:21
+ * @LastEditTime: 2021-04-10 15:40:26
  */
 import produce from 'immer'
 import StateContainer from './StateContainer'
@@ -44,6 +44,8 @@ export default function createLocalStore<S, C extends ActionCreator<S>>(
     }
   }
 
+  const getState = () => stateContainer.state
+
   // Keep the single responsibility of the API
   function useState(): S
   function useState(isDeepEqual: boolean): S
@@ -59,6 +61,7 @@ export default function createLocalStore<S, C extends ActionCreator<S>>(
     instance: {
       actions,
       useState,
+      getState,
     },
     stateContainer,
   }
