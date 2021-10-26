@@ -1,32 +1,42 @@
-/*
- * @Description:
- * @Author: hejilun
- * @Date: 2021-03-27 20:38:49
- * @LastEditors: hejilun
- * @LastEditTime: 2021-04-10 16:09:57
- */
 import produce from 'immer'
 import StateContainer from './StateContainer'
 import useCheckForUpdateStore from './hooks/useCheckForUpdateStore'
-import {ActionCreator, Actions, MapStateFn} from './types/store'
+import {ActionCreator, Actions, MapStateFn, StoreOption} from './types/store'
 import rootStoreMap from './rootStoreMap'
+import {setAutoFreeze} from 'immer'
+
+setAutoFreeze(false)
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export default function createLocalStore<S, C extends ActionCreator<S>>(
+export default function createLocalStore<S, C extends ActionCreator<S>, O extends StoreOption<S>>(
   initialState: S,
   actionCreator: C,
-  uniqueKey: string,
+  {uniqueKey, shareProvider, shareConsumer, commitEnhancer}: O,
 ) {
   const localStoreCache = rootStoreMap?.get(uniqueKey)
 
-  const stateContainer = (localStoreCache
-    ? localStoreCache?.stateContainer
-    : new StateContainer(initialState)) as StateContainer<S>
+  let stateContainer: StateContainer<S>
+
+  // check and share stateContainer
+  if (localStoreCache?.stateContainer) {
+    stateContainer = localStoreCache?.stateContainer
+  } else if (typeof shareConsumer === 'function') {
+    const sharedContainer = shareConsumer?.()
+    stateContainer = sharedContainer?.state ? sharedContainer : new StateContainer(initialState)
+  } else {
+    stateContainer = new StateContainer(initialState)
+  }
+
+  if (typeof shareProvider === 'function') shareProvider?.(stateContainer)
+
   const actions = actionCreator({
     commit: updater => {
       const {state} = produce({state: stateContainer.state}, updater)
       stateContainer.state = state
       stateContainer.notify()
+
+      if (typeof commitEnhancer === 'function') commitEnhancer?.()
+
       return state
     },
     get: () => ({

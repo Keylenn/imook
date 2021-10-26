@@ -54,7 +54,9 @@ const counterStore = createLocalStore(
       });
     }
   }),
-  "counterStore"
+  {
+    uniqueKey:  "counterStore",
+  }
 );
 
 export default counterStore;
@@ -88,8 +90,8 @@ export default Counter;
 ```
 
 ## 💡API
-### ```createLocalStore(initialState, actionCreator, uniqueKey)```
-createLocalStore接收初始状态initialState和actions的生成器[actionCreator](#actionCreator)，还有标识全局单一实例的uniqueKey，返回一个Store对象。
+### ```createLocalStore(initialState, actionCreator, option)```
+createLocalStore接收初始状态initialState和actions的生成器[actionCreator](#actionCreator)，还有标识全局单一实例的uniqueKey等option配置，返回一个Store对象。
 
 #### ```actionCreator```
 action生成器函数，接收工具类对象```ActionUtils```作为参数，返回actions

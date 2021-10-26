@@ -19,8 +19,8 @@ export default function useCheckForUpdateStore<S>(
   const depsRef = React.useRef<any[]>(getDeps(stateContainer, mapStateFn))
 
   useIsomorphicLayoutEffect(() => {
-    const listener = () => {
-      if (!mapStateFn && !isDeepEqual) {
+    const listener = ({isForceRenderDirectly = false} = {}) => {
+      if (isForceRenderDirectly || (!mapStateFn && !isDeepEqual)) {
         forceRender()
         return
       }

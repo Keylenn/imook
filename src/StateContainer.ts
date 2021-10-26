@@ -1,4 +1,4 @@
-type Listener = () => void
+type Listener = (...args: any) => void
 
 class StateContainer<S> {
   constructor(initialState: S) {
@@ -8,9 +8,9 @@ class StateContainer<S> {
   state: S
   listeners = new Set<Listener>()
 
-  notify(): void {
+  notify(...args: any[]): void {
     for (const listener of this.listeners) {
-      listener()
+      listener(...args)
     }
   }
 }
